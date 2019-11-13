@@ -14,3 +14,44 @@
  parseInt('2',1)  result NaN ,没有1进制
  parseInt('3',2)  result NaN ,2进制中没有3这个数值，无法解析，返回NaN
 ```
+
+## 第 2 题：什么是防抖和节流？有什么区别？如何实现？
+
+1. 防抖：任务频繁触发的条件下（如：scroll,resize,人为的连续点击事件），只有在任务触发的时间间隔超出指定间隔时，任务才会触发，为了节省资源，减少不必要损耗
+应用场景： 输入框中模糊搜索，输入值后请求接口返回对应的搜索结果
+```
+// 防抖
+    function debounce(func, wait) {
+      var timeout;
+
+      return function() {
+        var context = this;
+        var args = arguments;
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          func.apply(context, args);
+        }, wait);
+      };
+    }
+```
+
+2. 节流：任务频繁触发的条件下，在指定的时间间隔内，只执行以此任务
+应用场景： 图片懒加载，再向下滑动时，超出首屏时，在间隔时间内，请求图片资源
+~~~
+// 节流
+    function throttle(func, wait) {
+      var timeout;
+      return function() {
+        var context = this;
+        var args = arguments;
+        if (!timeout) {
+          timeout = setTimeout(function() {
+            func.apply(context, args);
+            timeout = null;
+          }, wait);
+        }
+      };
+    }
+~~~
+ps: 无论是防抖和节流，本质上作用都是为了节约计算机资源，提高程序的性能，使用的是闭包和定时器
